@@ -381,16 +381,44 @@ li.logo span {
 }
 
 .platform-card,
-.skill-card,
 .note-card {
   height: calc(100% - 30px);
   margin-bottom: 30px;
 }
 
 .platform-card .card-content,
-.skill-card .card-content,
 .note-card .card-content {
   height: 100%;
+}
+
+#platform-work .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#platform-work .row .col {
+  display: flex;
+  float: none;
+  margin-left: 0;
+}
+
+#platform-work .card {
+  width: 100%;
+}
+
+#skills .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#skills .row .col {
+  float: none;
+  margin-left: 0;
+}
+
+#skills .card {
+  margin-bottom: 30px;
+  width: 100%;
 }
 
 .card .role {
@@ -438,11 +466,17 @@ li.logo span {
 }
 
 #experience .card .col.s12.m2 a {
-  display: block;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 70px;
 }
 
 #experience .card .col.s12.m2 a img {
-  max-height: 60px;
+  height: 60px;
+  max-width: 120px;
+  object-fit: contain;
+  width: 120px;
 }
 
 .card-action span {
@@ -527,18 +561,20 @@ a.hoverline:hover {
 }
 
 .skill-tags {
-  display: flex;
+  align-items: flex-start;
+  display: flex !important;
   flex-wrap: wrap;
   gap: 10px;
 }
 
 .skill-tags span {
-  background: #f5f5f5;
-  border-left: 3px solid #008073;
-  color: #333;
-  display: inline-block;
+  background: #f5f5f5 !important;
+  border-left: 3px solid #008073 !important;
+  color: #333 !important;
+  display: inline-flex;
   font-size: 15px;
   line-height: 1.4;
+  margin: 0 10px 10px 0;
   padding: 7px 10px;
 }
 
@@ -567,8 +603,16 @@ a.hoverline:hover {
 }
 
 #experience .card-content .row {
+  align-items: center;
   border-bottom: 1px solid #ddd;
+  display: flex;
+  margin-bottom: 0;
+  min-height: 80px;
   padding-bottom: 10px;
+}
+
+#experience .card-content .row .col {
+  float: none;
 }
 
 .card.large .card-image {
@@ -740,6 +784,12 @@ small {
   }
   #experience .card-title a {
     margin: 0;
+  }
+  #experience .card-content .row {
+    display: block;
+  }
+  #experience .card .col.s12.m2 a {
+    min-height: 60px;
   }
   i.mdi-navigation-close.right {
     position: relative;
