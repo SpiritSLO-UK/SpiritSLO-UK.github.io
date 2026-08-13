@@ -671,11 +671,18 @@ a.hoverline:hover {
   margin-top: 20px;
 }
 
+/* LinkedIn's embed is designed around a ~550px column, so cap it rather than
+   letting it stretch across a full-width featured card. */
 .li-embed iframe {
   border: 1px solid #ddd;
   display: block;
   height: 600px;
+  max-width: 620px;
   width: 100%;
+}
+
+.writing-card.featured .card-title {
+  font-size: 26px;
 }
 
 @media only screen and (max-width: 600px) {

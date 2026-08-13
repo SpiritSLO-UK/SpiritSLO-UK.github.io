@@ -55,22 +55,42 @@ TAG_HINTS = {
 }
 
 
-def urn_from(url):
-    """Pull a urn out of any of the URL shapes LinkedIn hands out."""
+TYPES = {"ugcpost": "ugcPost", "activity": "activity", "share": "share"}
+
+
+def find_urn(text):
+    """Find a post urn in a URL or in page markup, in any of LinkedIn's spellings."""
     for pattern in (
-        r"urn:li:(ugcPost|activity|share):(\d{10,25})",  # /feed/update/... and /embed/...
-        r"-(activity)-(\d{10,25})",                      # "Copy link to post" form
+        r"urn:li:(ugcPost|activity|share):(\d{10,25})",   # /feed/update/... and /embed/...
+        r"[-_](ugcPost|activity|share)[-_](\d{10,25})",   # "Copy link to post" slug form
     ):
-        match = re.search(pattern, url)
+        match = re.search(pattern, text, re.I)
         if match:
-            return f"urn:li:{match.group(1)}:{match.group(2)}"
+            return f"urn:li:{TYPES[match.group(1).lower()]}:{match.group(2)}"
+    return ""
+
+
+def urn_from(url, allow_fetch=True):
+    """Pull a urn out of any of the URL shapes LinkedIn hands out."""
+    urn = find_urn(url)
+    if urn:
+        return urn
+
     bare = re.fullmatch(r"\s*(\d{15,25})\s*", url)
     if bare:
         return f"urn:li:activity:{bare.group(1)}"
+
+    # /pulse/ article URLs carry no id, so ask the page for its own canonical one.
+    if allow_fetch and "linkedin.com" in url:
+        print("  ..     no id in the URL, asking LinkedIn for the canonical one")
+        urn = find_urn(fetch(url))
+        if urn:
+            return urn
+
     raise SystemExit(
         f"Could not find a LinkedIn post id in: {url}\n"
-        "Expected something like https://www.linkedin.com/feed/update/urn:li:ugcPost:123.../ "
-        "or the URL from 'Copy link to post'."
+        "Works with: /feed/update/urn:li:ugcPost:123.../, the URL from 'Copy link to post', "
+        "a /pulse/ article URL, or a bare post id."
     )
 
 
@@ -88,14 +108,22 @@ def first(pattern, text):
     return html.unescape(" ".join(match.group(1).split())) if match else ""
 
 
-def scrape(urn):
-    """Best-effort metadata from LinkedIn's public embed page."""
-    request = urllib.request.Request(EMBED + urn, headers={"User-Agent": UA})
+def fetch(url):
+    """Page HTML, or "" if LinkedIn declines to serve it."""
+    request = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
         with urllib.request.urlopen(request, timeout=20) as response:
-            page = response.read().decode("utf-8", "replace")
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as error:
-        print(f"  ! could not read the embed page ({error}) - writing what we know", file=sys.stderr)
+            return response.read().decode("utf-8", "replace")
+    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError) as error:
+        print(f"  ! could not read {url} ({error})", file=sys.stderr)
+        return ""
+
+
+def scrape(urn):
+    """Best-effort metadata from LinkedIn's public embed page."""
+    page = fetch(EMBED + urn)
+    if not page:
+        print("  ! no metadata available - writing what we can derive", file=sys.stderr)
         return {}
 
     meta = {}
@@ -121,6 +149,26 @@ def scrape(urn):
         meta["url"] = pulse.group(1)
 
     return {key: value for key, value in meta.items() if value}
+
+
+def find_existing(posts, urn, found):
+    """Locate an entry for this post, tolerating LinkedIn's several ids for one post.
+
+    A /pulse/ URL resolves to urn:li:activity:N while the same post shared as
+    urn:li:ugcPost:M has a different N - so matching on the urn alone would file
+    one post twice. Fall back to the canonical URL and then the title.
+    """
+    url, title = found.get("url", ""), found.get("title", "")
+    for post in posts:
+        if post.get("urn") == urn:
+            return post, "urn"
+    for post in posts:
+        if url and post.get("url") == url:
+            return post, "url"
+    for post in posts:
+        if title and post.get("title", "").strip().lower() == title.strip().lower():
+            return post, "title"
+    return None, ""
 
 
 def slug(title, taken):
@@ -152,7 +200,7 @@ def main():
     parser.add_argument("--no-fetch", action="store_true", help="skip LinkedIn, use flags only")
     args = parser.parse_args()
 
-    urn = urn_from(args.url)
+    urn = urn_from(args.url, allow_fetch=not args.no_fetch)
     print(f"  post   {urn}")
 
     found = {} if args.no_fetch else scrape(urn)
@@ -169,7 +217,9 @@ def main():
 
     data = json.loads(POSTS.read_text(encoding="utf-8"))
     posts = data["posts"]
-    existing = next((p for p in posts if p.get("urn") == urn), None)
+    existing, matched_on = find_existing(posts, urn, found)
+    if existing and matched_on != "urn":
+        print(f"  note   same post as an existing entry (matched on {matched_on})")
 
     # Re-running a URL must never downgrade an entry that is already good: start
     # from what is on file and only let non-empty values overwrite it. Otherwise a
@@ -177,7 +227,9 @@ def main():
     entry = dict(existing) if existing else {}
     entry.update({key: value for key, value in found.items() if value})
 
-    entry["urn"] = urn
+    # Keep whichever urn is already on file - it works, and churning it would
+    # rewrite the embed URL of a card that was rendering fine.
+    entry.setdefault("urn", urn)
     entry.setdefault("url", f"https://www.linkedin.com/feed/update/{urn}/")
     entry.setdefault("kind", "LinkedIn post")
     entry.setdefault("date", date_from(urn))

@@ -19,7 +19,11 @@ The workflow fills in the rest for you:
 
 Any of the optional inputs override what was scraped, so if LinkedIn returns a truncated title or the
 auto-tags miss, fill that box in and re-run with the same URL — re-running updates the existing entry
-in place rather than duplicating it.
+in place rather than duplicating it, and never lets a blocked scrape overwrite values already on file.
+
+**The newest post is automatically featured**: full width, with LinkedIn's embed open on load. Older
+posts sit two-up and load their embed only when a visitor clicks, since each iframe pulls roughly a
+megabyte of LinkedIn's assets. Add `"featured": false` to a post to opt it out.
 
 ### The pieces
 

@@ -53,11 +53,13 @@ def load_posts():
     return sorted(posts, key=lambda post: post["date"], reverse=True)
 
 
-def render_card(post, indent):
+def render_card(post, indent, featured):
     pad = " " * indent
+    column = "col s12" if featured else "col s12 m12 l6"
+
     lines = [
-        f'{pad}<div class="col s12 m12 l6">',
-        f'{pad}  <article class="card writing-card">',
+        f'{pad}<div class="{column}">',
+        f'{pad}  <article class="card writing-card{" featured" if featured else ""}">',
         f'{pad}    <div class="card-content">',
         f'{pad}      <div class="post-meta brown-text text-darken-2">'
         f'{esc(post.get("kind", "LinkedIn post"))} &middot; '
@@ -84,12 +86,23 @@ def render_card(post, indent):
 
     if post.get("urn"):
         embed = f"https://www.linkedin.com/embed/feed/update/{post['urn']}"
-        lines += [
+        lines.append(
             f'{pad}      <button type="button" class="embed-toggle teal-text"'
             f' data-embed="{esc(embed)}" data-title="{esc(post["title"])}"'
-            f' aria-expanded="false">Show post here</button>',
-            f'{pad}      <div class="li-embed" hidden></div>',
-        ]
+            f' aria-expanded="{"true" if featured else "false"}">'
+            f'{"Hide post" if featured else "Show post here"}</button>'
+        )
+        if featured:
+            # Rendered in the markup rather than injected, so it still shows with
+            # JavaScript off. The toggle takes over from here.
+            lines += [
+                f'{pad}      <div class="li-embed">',
+                f'{pad}        <iframe src="{esc(embed)}" title="{esc(post["title"])}"'
+                f' frameborder="0" allowfullscreen loading="lazy"></iframe>',
+                f"{pad}      </div>",
+            ]
+        else:
+            lines.append(f'{pad}      <div class="li-embed" hidden></div>')
 
     lines.append(f"{pad}    </div>")
     lines.append(f"{pad}  </article>")
@@ -99,7 +112,13 @@ def render_card(post, indent):
 
 def render_block(posts, indent):
     pad = " " * indent
-    body = "\n".join(render_card(post, indent + 2) for post in posts)
+    # The newest post is featured: full width, embed open on load. The rest stay
+    # click-to-load, because one LinkedIn iframe per card costs roughly a megabyte
+    # of their assets each. Set "featured": false on a post to opt it out.
+    body = "\n".join(
+        render_card(post, indent + 2, post.get("featured", index == 0))
+        for index, post in enumerate(posts)
+    )
     return (
         f"{pad}{START} - generated from assets/data/posts.json by"
         f" scripts/build_writing.py, do not edit by hand -->\n"
