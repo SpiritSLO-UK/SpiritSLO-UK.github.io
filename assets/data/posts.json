@@ -1,0 +1,20 @@
+{
+  "$comment": "Source of truth for the Writing section. Preferred way to add a post: GitHub -> Actions -> 'Add writing post' -> paste the LinkedIn URL -> Run workflow. Editing this file by hand also works; scripts/build_writing.py renders it into index.html.",
+  "posts": [
+    {
+      "id": "aws-aft-notes",
+      "title": "100s of accounts, 1600 resources, 30 minutes, no humans: notes on AWS Account Factory for Terraform",
+      "summary": "What it actually takes to provision hundreds of AWS accounts with Control Tower and Account Factory for Terraform, including the bits I got wrong.",
+      "date": "2026-08-13",
+      "kind": "LinkedIn article",
+      "url": "https://www.linkedin.com/pulse/100s-accounts-1600-resources-30-minutes-humans-notes-aws-peternel-nbpze",
+      "urn": "urn:li:ugcPost:7493706619843899392",
+      "tags": [
+        "AWS Control Tower",
+        "AFT",
+        "Terraform",
+        "Account Vending"
+      ]
+    }
+  ]
+}

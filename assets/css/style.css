@@ -484,6 +484,27 @@ li.logo span {
   color: #666;
 }
 
+/* Project cards that link out to a repo or a public thread. */
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-bottom: 12px;
+}
+
+.project-links a {
+  color: #00796b;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-right: 0;
+  text-transform: uppercase;
+}
+
+.project-links a:hover {
+  text-decoration: underline;
+}
+
 .card ul {
   margin-bottom: 0;
 }
@@ -585,6 +606,82 @@ a.hoverline:hover {
 
 #technical-notes .card-content p {
   margin-bottom: 0;
+}
+
+.writing-intro {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+#writing .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#writing .row .col {
+  display: flex;
+  float: none;
+  margin-left: 0;
+}
+
+.writing-card {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 30px);
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.writing-card .card-content {
+  flex: 1 1 auto;
+}
+
+.writing-card .card-title {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.writing-card .post-meta {
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.writing-card .post-tags {
+  margin-top: 20px;
+}
+
+.writing-card .card-action .embed-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.writing-card .card-action .embed-toggle:hover {
+  text-decoration: underline;
+}
+
+.li-embed {
+  margin-top: 20px;
+}
+
+.li-embed iframe {
+  border: 1px solid #ddd;
+  display: block;
+  height: 600px;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .li-embed iframe {
+    height: 520px;
+  }
 }
 
 #skills .col img.responsive-img {

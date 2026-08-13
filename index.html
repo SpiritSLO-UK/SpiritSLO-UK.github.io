@@ -19,7 +19,7 @@
   <!-- Font Awesome Icon - CSS-->
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
   <!-- Custom Styles-->
-  <link rel="stylesheet" href="/assets/css/style.css?v=20260531" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=20260813b" />
   <link rel="canonical" href="https://peternel.me/" />
   <title>Blaz Peternel | DevOps Lead & Cloud Platform Engineer</title>
 
@@ -133,6 +133,11 @@
       </li>
 
       <li class="bold">
+        <a aria-label="Navigate to the Writing section" href="#writing" class="waves-effect waves-dark teal-text"><i
+            class="mdi-editor-mode-edit small"></i><span>Writing</span></a>
+      </li>
+
+      <li class="bold">
         <!--
         ICONS:
         -->
@@ -202,6 +207,10 @@
       <li class="bold">
         <a aria-label="Navigate to the Strengths section" href="#strengths" class="waves-effect waves-dark teal-text"><i
             class="mdi-action-done-all small"></i><span>Strengths</span></a>
+      </li>
+      <li class="bold">
+        <a aria-label="Navigate to the Writing section" href="#writing" class="waves-effect waves-dark teal-text"><i
+            class="mdi-editor-mode-edit small"></i><span>Writing</span></a>
       </li>
       <li class="bold">
         <a aria-label="Navigate to the Education section" href="#education" class="waves-effect waves-dark teal-text"><i
@@ -605,7 +614,32 @@
           </div>
         </div>
 
-        <!-- Project 4: Smart home and solar automation -->
+        <!-- Project 4: Finance Intelligence Home Assistant add-on -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title teal-text"><i class="fa fa-pie-chart"></i>Finance Intelligence - Local-First Home Assistant Add-On</h3>
+            <div class="role brown-text text-darken-2">Personal Project / Open Source</div>
+            <ul>
+              <li>Built and published an open-source Home Assistant add-on for household finance analytics, designed so banking data never leaves the user's own hardware: no outbound requests by default, and everything stored in the add-on's own encrypted volume.</li>
+              <li>Architected as a FastAPI (Python 3.12) backend with SQLAlchemy and Alembic migrations over SQLite with optional SQLCipher encryption, and a React + TypeScript frontend built with Vite. Ships either as a Home Assistant add-on behind ingress authentication or standalone via Docker Compose.</li>
+              <li>Implemented statement ingestion from CSV, PDF and photos with duplicate detection, local Tesseract OCR for receipts, and rules, vendor-library and keyword categorisation that runs before any AI is involved.</li>
+              <li>Made AI categorisation optional and privacy-controlled: it can run entirely against a local LLM (Ollama or LM Studio), cloud models are opt-in, payloads are redacted, and sensitive categories such as salary, mortgage and medical are never sent.</li>
+              <li>Published budgets, spend and subscription metrics as MQTT sensors so the data drives Home Assistant dashboards and automations, including energy-cost offsets against solar and grid usage.</li>
+              <li>Added multi-user household support with role-based access, TOTP two-factor authentication, encrypted backups, and data-retention archive/purge policies.</li>
+              <li>Covered the stack with pytest and Playwright end-to-end suites and ruff linting, with tests hard-blocked from running against live data. Released under Apache 2.0 and shared with the Home Assistant community.</li>
+              <li><b>Technologies:</b> Python 3.12, FastAPI, SQLAlchemy, Alembic, SQLite, SQLCipher, React, TypeScript, Vite, Docker, MQTT, Tesseract OCR, Home Assistant add-on ingress, Playwright, pytest, ruff</li>
+            </ul>
+          </div>
+          <div class="card-action">
+            <div class="project-links">
+              <a href="https://github.com/SpiritSLO-UK/HomeAssistant-expenses-analytics" target="_blank" rel="noopener" aria-label="View on GitHub: Finance Intelligence add-on source">View on GitHub</a>
+              <a href="https://community.home-assistant.io/t/finance-intelligence-a-local-first-personal-finance-add-on/1013060" target="_blank" rel="noopener" aria-label="Home Assistant community thread for the Finance Intelligence add-on">Home Assistant community thread</a>
+            </div>
+            <span>Personal Project - Ongoing</span>
+          </div>
+        </div>
+
+        <!-- Project 5: Smart home and solar automation -->
         <div class="card">
           <div class="card-content">
             <h3 class="card-title teal-text"><i class="fa fa-home"></i>Smart Home &amp; Solar Automation</h3>
@@ -726,6 +760,21 @@
               </div>
             </div>
           </div>
+          <div class="col s12 m6">
+            <div class="card skill-card">
+              <div class="card-content">
+                <h3 class="card-title brown-text light"><i class="fa fa-terminal"></i>Development</h3>
+                <div class="skill-tags">
+                  <span>Python</span>
+                  <span>FastAPI</span>
+                  <span>React</span>
+                  <span>TypeScript</span>
+                  <span>REST APIs</span>
+                  <span>Git</span>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="col s12">
             <div class="card skill-card">
               <div class="card-content">
@@ -819,6 +868,40 @@
     </section>
     -->
 
+    <!-- Writing Section: cards are generated from assets/data/posts.json -->
+    <section id="writing" class="section scrollspy">
+      <h2 class="page-title white-text teal">Writing</h2>
+      <div class="container">
+        <p class="writing-intro">Notes and longer write-ups on the platform work I do, published on LinkedIn.</p>
+        <!-- writing:start - generated from assets/data/posts.json by scripts/build_writing.py, do not edit by hand -->
+        <div class="row">
+          <div class="col s12 m12 l6">
+            <article class="card writing-card">
+              <div class="card-content">
+                <div class="post-meta brown-text text-darken-2">LinkedIn article &middot; <time datetime="2026-08-13">13 August 2026</time></div>
+                <h3 class="card-title">
+                  <a class="teal-text hoverline" href="https://www.linkedin.com/pulse/100s-accounts-1600-resources-30-minutes-humans-notes-aws-peternel-nbpze" target="_blank" rel="noopener">100s of accounts, 1600 resources, 30 minutes, no humans: notes on AWS Account Factory for Terraform</a>
+                </h3>
+                <p class="brown-text">What it actually takes to provision hundreds of AWS accounts with Control Tower and Account Factory for Terraform, including the bits I got wrong.</p>
+                <div class="skill-tags post-tags">
+                  <span>AWS Control Tower</span>
+                  <span>AFT</span>
+                  <span>Terraform</span>
+                  <span>Account Vending</span>
+                </div>
+              </div>
+              <div class="card-action">
+                <a href="https://www.linkedin.com/pulse/100s-accounts-1600-resources-30-minutes-humans-notes-aws-peternel-nbpze" target="_blank" rel="noopener" aria-label="Read &quot;100s of accounts, 1600 resources, 30 minutes, no humans: notes on AWS Account Factory for Terraform&quot; on LinkedIn">Read on LinkedIn</a>
+                <button type="button" class="embed-toggle teal-text" data-embed="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7493706619843899392" data-title="100s of accounts, 1600 resources, 30 minutes, no humans: notes on AWS Account Factory for Terraform" aria-expanded="false">Show post here</button>
+                <div class="li-embed" hidden></div>
+              </div>
+            </article>
+          </div>
+        </div>
+        <!-- writing:end -->
+      </div>
+    </section>
+
     <!-- Sixth Section: Education and Learning -->
     <section id="education" class="section scrollspy">
       <h2 class="page-title white-text teal">Education &amp; Learning</h2>
@@ -907,6 +990,35 @@
         edge: "left", // Choose the horizontal origin
         closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
       })
+    })
+  </script>
+
+  <script>
+    // Writing section: load LinkedIn's official embed only when a visitor asks for it,
+    // so the page stays fast and sets no LinkedIn cookies by default.
+    $(document).on("click", ".embed-toggle", function () {
+      var button = $(this)
+      var holder = button.siblings(".li-embed")
+      var open = button.attr("aria-expanded") === "true"
+
+      if (open) {
+        holder.attr("hidden", "hidden")
+        button.attr("aria-expanded", "false").text("Show post here")
+        return
+      }
+
+      if (!holder.children().length) {
+        $("<iframe>", {
+          src: button.data("embed"),
+          title: button.data("title"),
+          frameborder: "0",
+          allowfullscreen: "true",
+          loading: "lazy"
+        }).appendTo(holder)
+      }
+
+      holder.removeAttr("hidden")
+      button.attr("aria-expanded", "true").text("Hide post")
     })
   </script>
 </body>

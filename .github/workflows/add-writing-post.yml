@@ -1,0 +1,82 @@
+name: Add writing post
+
+# Paste a LinkedIn URL, press Run, and the post appears on peternel.me.
+# GitHub -> Actions -> "Add writing post" -> Run workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'LinkedIn post URL (feed/update/... or "Copy link to post")'
+        required: true
+        type: string
+      title:
+        description: 'Title - leave blank to use the one LinkedIn reports'
+        required: false
+        type: string
+      summary:
+        description: 'Summary - leave blank to use the post description'
+        required: false
+        type: string
+      tags:
+        description: 'Tags, comma separated - leave blank to auto-suggest'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: writing
+  cancel-in-progress: false
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Inputs go through env, never straight into the run block, so a stray
+      # quote or backtick in a title cannot break out into the shell.
+      - name: Add the post to posts.json
+        env:
+          URL: ${{ inputs.url }}
+          TITLE: ${{ inputs.title }}
+          SUMMARY: ${{ inputs.summary }}
+          TAGS: ${{ inputs.tags }}
+        run: |
+          python scripts/add_post.py "$URL" \
+            --title "$TITLE" \
+            --summary "$SUMMARY" \
+            --tags "$TAGS"
+
+      - name: Render the Writing section
+        run: python scripts/build_writing.py
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- index.html assets/data/posts.json; then
+            echo "Nothing changed - this post is already on the site."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets/data/posts.json
+          git commit -m "Add writing post from LinkedIn"
+          git push
+
+      - name: Summary
+        run: |
+          {
+            echo '### Writing section updated'
+            echo
+            echo 'Live in a minute or two at <https://peternel.me/#writing>.'
+            echo
+            echo 'Current posts:'
+            echo '```'
+            python -c "import json;[print('-',p['date'],'|',p['title']) for p in json.load(open('assets/data/posts.json'))['posts']]"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

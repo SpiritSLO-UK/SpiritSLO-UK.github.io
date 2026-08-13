@@ -1,0 +1,43 @@
+name: Build writing section
+
+# Regenerates the Writing section of index.html whenever the post list changes,
+# so adding an article only ever means editing assets/data/posts.json.
+on:
+  push:
+    branches: [main]
+    paths:
+      - assets/data/posts.json
+      - scripts/build_writing.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-writing
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Render posts into index.html
+        run: python scripts/build_writing.py
+
+      - name: Commit if the rendered output changed
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "index.html already matches posts.json - nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Regenerate writing section from posts.json"
+          git push
