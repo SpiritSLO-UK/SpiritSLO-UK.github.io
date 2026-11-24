@@ -391,19 +391,87 @@ li.logo span {
   height: 100%;
 }
 
-#platform-work .row {
+#leadership .row,
+#projects .row {
   display: flex;
   flex-wrap: wrap;
 }
 
-#platform-work .row .col {
+#leadership .row .col,
+#projects .row .col {
   display: flex;
   float: none;
   margin-left: 0;
 }
 
-#platform-work .card {
+#leadership .card,
+#projects .card {
   width: 100%;
+}
+
+/* Leadership: headline numbers above the cards. */
+.impact-strip {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 40px;
+}
+
+.impact-strip .stat {
+  background: #fff;
+  border-left: 3px solid #008073;
+  padding: 18px 20px;
+}
+
+.impact-strip .stat-value {
+  color: #008073;
+  display: block;
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.impact-strip .stat-label {
+  color: #555;
+  display: block;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* Experience cards that hold more than one role at the same company. */
+.role-step {
+  font-size: 1.25rem;
+  margin: 25px 0 5px;
+}
+
+.role-step .role-dates {
+  color: #666;
+  font-size: 15px;
+  margin-left: 8px;
+}
+
+/* Project cards: a status line under the title and a stack line at the end. */
+.project-meta {
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.platform-card p,
+.card.platform-card ul li {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.card.platform-card ul li {
+  margin-bottom: 8px;
+}
+
+.platform-card .project-stack {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 15px;
 }
 
 #skills .row {
@@ -564,7 +632,7 @@ a.hoverline:hover {
   padding-bottom: 20px;
 }
 
-#platform-work .card-title i,
+#leadership .card-title i,
 #projects .card-title i,
 #skills .card-title i {
   color: #008073;
@@ -573,7 +641,7 @@ a.hoverline:hover {
   margin-top: 6px;
 }
 
-#platform-work .card-title,
+#leadership .card-title,
 #projects .card-title,
 #skills .card-title {
   align-items: flex-start;
@@ -867,6 +935,19 @@ small {
 }
 
 @media (max-width: 600px) {
+  .impact-strip {
+    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .impact-strip .stat {
+    padding: 14px 12px;
+  }
+  .impact-strip .stat-value {
+    font-size: 26px;
+  }
+  .impact-strip .stat-label {
+    font-size: 13px;
+  }
   h1 {
     font-size: 22px;
     line-height: 200%;

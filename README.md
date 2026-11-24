@@ -3,6 +3,28 @@
 
 > https://varadbhogayata.github.io
 
+## What's on the page
+
+Everything lives in one page, [index.html](./index.html), served at [peternel.me](https://peternel.me). Sections, in order:
+
+| Section | What it holds |
+| --- | --- |
+| Intro | Name, current title (rotating via typed.js) and a two-line summary |
+| About | Three short paragraphs: current role, background, how I work |
+| Leadership | An impact strip of six headline numbers, then cards on people and hiring, roadmap and budget, planning, incidents, review standards and written decisions |
+| Experience | Roles newest first. A company with more than one role lists each role with its own dates (`role-step`) |
+| Projects | Two-up cards, each with a status line (in production, proof of concept, design stage) and a stack line; personal projects last |
+| Skills | Tag groups, ending with leadership and ways of working |
+| Writing | Generated from `posts.json`, see below |
+| Education & Certification | School and certification |
+| Contact | Email and LinkedIn |
+
+When editing, keep the status lines and the "estimated" or "projected" wording accurate; every figure on the
+page should be one I can source. Client names, account IDs and internal repository names stay off the site.
+
+The Resume buttons link to [assets/resume/Blaz_Peternel_Resume.pdf](./assets/resume/Blaz_Peternel_Resume.pdf).
+Replace that file in place to update it; the links don't change.
+
 ## Adding a post to the Writing section ✍️
 
 **Paste a URL, press a button.** Go to **Actions → [Add writing post](../../actions/workflows/add-writing-post.yml)
